@@ -80,6 +80,11 @@ on:
         required: true
         type: string
 
+      NODE_AUTH_TOKEN:
+        description: 'Node authentication token for npm registry'
+        required: true
+        type: string
+
 jobs:
 
  check-deployment-branch:

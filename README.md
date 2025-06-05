@@ -63,7 +63,12 @@ publish_command:
       description: 'GitHub token for authentication'
       required: true
 
-    NPM_TOKEN:
-      description: 'NPM token for publishing packages'
-      required: true
+  NPM_TOKEN:
+    description: 'NPM token for publishing packages'
+    required: true
+    
+  NODE_AUTH_TOKEN:
+    description: 'Node authentication token for npm registry'
+    required: true
+    type: string
  ```
