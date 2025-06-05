@@ -62,6 +62,12 @@ version_command:
 publish_command:
     description: 'Command to publish the package'
     required: true
+
+is_pre_release:
+    description: 'Indicates if the package is a pre-release'
+    required: false
+    type: boolean
+    default: false
   ```
 
   ## Secrets

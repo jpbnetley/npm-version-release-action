@@ -66,6 +66,12 @@ on:
         required: true
         type: string
 
+      is_pre_release:
+        description: 'Indicates if the package is a pre-release'
+        required: false
+        type: boolean
+        default: false
+
     # secrets:
     #   GITHUB_TOKEN:
     #     description: 'GitHub token for authentication'
@@ -187,3 +193,10 @@ jobs:
       run: |
         echo "## Package Version" >> $GITHUB_STEP_SUMMARY
         echo "- Version: ${{ steps.package-version.outputs.PACKAGE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+
+    - name: Merge main into dev with pull request
+      if: ${{ inputs.is_pre_release == false }}
+      id: merge_dev
+      run: gh pr create --base dev --head main --title "Merge main into dev after release" --body "Merging main into dev" --assignee ${{ github.actor }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
