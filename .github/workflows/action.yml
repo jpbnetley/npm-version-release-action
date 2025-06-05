@@ -66,18 +66,18 @@ on:
         required: true
         type: string
 
-    secrets:
-      GITHUB_TOKEN:
-        description: 'GitHub token for authentication'
-        required: true
+    # secrets:
+    #   GITHUB_TOKEN:
+    #     description: 'GitHub token for authentication'
+    #     required: true
 
-      NPM_TOKEN:
-        description: 'NPM token for publishing packages'
-        required: true
+    #   NPM_TOKEN:
+    #     description: 'NPM token for publishing packages'
+    #     required: true
 
-      NODE_AUTH_TOKEN:
-        description: 'Node authentication token for npm registry'
-        required: true
+    #   NODE_AUTH_TOKEN:
+    #     description: 'Node authentication token for npm registry'
+    #     required: true
 
 jobs:
   check-deployment-branch:
