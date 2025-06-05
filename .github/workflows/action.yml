@@ -107,7 +107,7 @@ jobs:
     needs: check-deployment-branch
 
     steps:
-    - run: echo ${{needs.check-deployment-branch.outputs.is_valid_branch}}
+    - run: echo "${{needs.check-deployment-branch.outputs.is_valid_branch}}"
   
   build:
     name: Build
