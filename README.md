@@ -42,6 +42,11 @@ build_output_path:
     description: 'Path to the build output directory'
     required: false
     default: 'dist'
+
+deployment_branch_name:
+    description: 'Branch name for deployment'
+    required: false
+    default: 'main'
   ```
 
   ## Secrets
