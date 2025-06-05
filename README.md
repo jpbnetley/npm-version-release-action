@@ -70,5 +70,4 @@ publish_command:
   NODE_AUTH_TOKEN:
     description: 'Node authentication token for npm registry'
     required: true
-    type: string
  ```
