@@ -186,7 +186,7 @@ jobs:
       id: package-version
       run: |
         path_to_package_json=${{ inputs.path_to_package_json }}
-        PACKAGE_VERSION=$(node -p "require($path_to_package_json).version")
+        PACKAGE_VERSION=$(node -p "require('$path_to_package_json').version")
         echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
 
     - name: Set job summary
