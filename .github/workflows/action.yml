@@ -98,7 +98,7 @@ jobs:
           echo "is_valid_branch=false" >> $GITHUB_OUTPUT
           exit 1
         else
-          echo "This workflow is running on the main branch."
+          echo "This workflow is running on the $branch_name branch."
           echo "is_valid_branch=true" >> $GITHUB_OUTPUT
         fi
   

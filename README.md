@@ -2,6 +2,12 @@
 This action builds and publishes an npm package to GitHub Packages.  
   It is intended for use in a CI/CD pipeline to automate the process of building and publishing a package.  
 
+  ## Required permissions
+  ```yml
+contents: write
+packages: write
+```
+
   ## Inputs
   ```yml
 node_version:
