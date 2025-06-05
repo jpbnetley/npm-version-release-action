@@ -194,6 +194,15 @@ jobs:
         echo "## Package Version" >> $GITHUB_STEP_SUMMARY
         echo "- Version: ${{ steps.package-version.outputs.PACKAGE_VERSION }}" >> $GITHUB_STEP_SUMMARY
 
+  merge-release-down-to-prerelease-branch:
+    runs-on: ubuntu-latest
+    needs: publish
+    if: ${{ inputs.is_pre_release == false }}
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
     - name: Merge main into dev with pull request
       if: ${{ inputs.is_pre_release == false }}
       id: merge_dev
