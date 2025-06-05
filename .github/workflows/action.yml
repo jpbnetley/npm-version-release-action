@@ -72,18 +72,11 @@ on:
         type: boolean
         default: false
 
-    # secrets:
-    #   GITHUB_TOKEN:
-    #     description: 'GitHub token for authentication'
-    #     required: true
-
-    #   NPM_TOKEN:
-    #     description: 'NPM token for publishing packages'
-    #     required: true
-
-    #   NODE_AUTH_TOKEN:
-    #     description: 'Node authentication token for npm registry'
-    #     required: true
+      pre_release_branch_name:
+        description: 'Branch name for pre-release deployment'
+        required: false
+        type: string
+        default: 'dev'
 
 jobs:
   check-deployment-branch:
@@ -206,6 +199,8 @@ jobs:
     - name: Merge main into dev with pull request
       if: ${{ inputs.is_pre_release == false }}
       id: merge_dev
-      run: gh pr create --base dev --head main --title "Merge main into dev after release" --body "Merging main into dev" --assignee ${{ github.actor }}
+      run: |
+        branch_name="${{ inputs.pre_release_branch_name }}"
+        gh pr create --base dev --head $branch_name --title "Merge main into dev after release" --body "Merging main into dev" --assignee ${{ github.actor }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

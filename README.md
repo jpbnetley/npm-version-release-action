@@ -68,6 +68,12 @@ is_pre_release:
     required: false
     type: boolean
     default: false
+
+pre_release_branch_name:
+    description: 'Branch name for pre-release deployment'
+    required: false
+    type: string
+    default: 'dev'
   ```
 
   ## Secrets
