@@ -201,8 +201,8 @@ jobs:
       if: ${{ inputs.is_pre_release == false }}
       id: merge_dev
       run: |
-        release_branch_name="${{ inputs.pre_release_branch_name }}"
-        pre_branch_name="${{ inputs.pre_release_branch_name }}"
-        gh pr create --base $pre_branch_name --head $release_branch_name --title "Merge $release_branch_name into $pre_release_branch_name after release" --body "Merging main into dev" --assignee ${{ github.actor }}
+        release_branch_name=${{ inputs.deployment_branch_name }}
+        pre_branch_name=${{ inputs.pre_release_branch_name }}
+        gh pr create --base $pre_branch_name --head $release_branch_name --title "Merge $release_branch_name into $pre_release_branch_name after release" --body "Merging $release_branch_name into $release_branch_name" --assignee ${{ github.actor }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
