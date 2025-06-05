@@ -50,6 +50,14 @@ on:
         required: false
         default: 'main'
 
+      version_command:
+        description: 'Command to create a version of the package'
+        required: true
+      
+      publish_command:
+        description: 'Command to publish the package'
+        required: true
+
     secrets:
       GITHUB_TOKEN:
         description: 'GitHub token for authentication'
@@ -148,10 +156,10 @@ jobs:
 
     - name: Create version
       id: create_version
-      run: npm run version:dev
+      run: ${{ inputs.version_command }}
     
     - name: Publish
-      run: npm run version:publish:dev
+      run: ${{ inputs.publish_command }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}

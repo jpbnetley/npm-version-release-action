@@ -47,6 +47,14 @@ deployment_branch_name:
     description: 'Branch name for deployment'
     required: false
     default: 'main'
+
+version_command:
+    description: 'Command to create a version of the package'
+    required: true
+
+publish_command:
+    description: 'Command to publish the package'
+    required: true
   ```
 
   ## Secrets
