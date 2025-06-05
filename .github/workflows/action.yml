@@ -29,7 +29,7 @@ on:
 
       registry_url:
         description: 'URL of the npm registry to publish to'
-        required: false
+        required: true
         type: string
 
       install_command:
@@ -203,6 +203,6 @@ jobs:
       run: |
         release_branch_name=${{ inputs.deployment_branch_name }}
         pre_branch_name=${{ inputs.pre_release_branch_name }}
-        gh pr create --base $pre_branch_name --head $release_branch_name --title "Merge $release_branch_name into $pre_release_branch_name after release" --body "Merging $release_branch_name into $release_branch_name" --assignee ${{ github.actor }}
+        gh pr create --base $pre_branch_name --head $release_branch_name --title "Merge $release_branch_name into $pre_release_branch_name after release" --body "Merging $release_branch_name into $pre_branch_name" --assignee ${{ github.actor }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

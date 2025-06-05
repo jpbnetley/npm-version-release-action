@@ -1,8 +1,37 @@
 # Build and deploy npm package
-This action builds and publishes an npm package to GitHub Packages.  
+This action builds and publishes an npm package.  
   It is intended for use in a CI/CD pipeline to automate the process of building and publishing a package.  
 
-  ## Required permissions
+## Notes
+- For the gh action to create pull requests, set the permission for the repo to "can create and merge pull requests"
+- for the action that creates the pull request, ensure the pull request write permission is granted
+```yml
+pull-requests: write
+```
+
+- For publishing the package, the action required
+```yml
+contents: write
+packages: write
+```
+
+## Order of events
+In order to maintain pre-release and production release versions, the order which the releases done are important.  
+Development continues as always on the dev branch.
+
+Once a release needs to be cut, a pull request is made to the main branch.  
+Once merged, a build can be kicked off by running the `release-main` workflow.
+This workflow will ask the branch to run on, and the release version.  
+The release version uses [semantic versioning](https://semver.org/) to determine the release version.  
+Thus the patch, minor, major options are provided when doing the production release.
+
+Once the production release is completed, a pull request is made to merge the new version change back down to dev.
+
+*NOTE*
+It is important to merge the production release version changes down to dev before any new changes on dev are made.  
+This ensures that the correct version is used on dev for the next dev releases.
+
+## Required permissions
   ```yml
 contents: write
 packages: write
@@ -33,7 +62,7 @@ path_to_package_lock:
 
 registry_url:
     description: 'URL of the npm registry to publish to'
-    required: false
+    required: true
 
 install_command:
     description: 'Command to install dependencies'
@@ -76,7 +105,7 @@ pre_release_branch_name:
     default: 'dev'
   ```
 
-  ## Secrets
+## Secrets
   ```yml
   GITHUB_TOKEN:
       description: 'GitHub token for authentication'
