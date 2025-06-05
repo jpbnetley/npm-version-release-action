@@ -188,6 +188,7 @@ jobs:
         echo "- Version: ${{ steps.package-version.outputs.PACKAGE_VERSION }}" >> $GITHUB_STEP_SUMMARY
 
   merge-release-down-to-prerelease-branch:
+    name: Merge release branch down to pre-release branch
     runs-on: ubuntu-latest
     needs: publish
     if: ${{ inputs.is_pre_release == false }}
