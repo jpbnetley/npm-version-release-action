@@ -6,6 +6,7 @@ This action builds and publishes an npm package to GitHub Packages.
   ```yml
 contents: write
 packages: write
+pull-requests: write
 ```
 
   ## Inputs
