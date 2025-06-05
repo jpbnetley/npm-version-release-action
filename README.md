@@ -201,8 +201,6 @@ jobs:
 
 - Production release (in this case to a dev branch)
 ```yml
-# This is a basic workflow to help you get started with Actions
-
 name: Build and deploy production
 on:
   workflow_dispatch:
