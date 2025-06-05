@@ -114,11 +114,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - run: |
-        pwd
-        ls
-        exit 1
-    
+    - name: debug
+      run: |
+          pwd
+          ls
+          exit 1
+      
     - name: Set up Node.js ${{ inputs.node_version }}
       uses: actions/setup-node@v4
       with:
