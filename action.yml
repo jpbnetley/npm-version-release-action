@@ -9,63 +9,76 @@ on:
       node_version:
         description: 'Node.js version to use for the build'
         required: false
+        type: string
         default: '18.x'
 
       package_manager:
         description: 'Package manager to use (npm or yarn)'
         required: false
+        type: string
         default: 'npm'
 
       path_to_package_json:
         description: 'Path to package.json file'
         required: false
+        type: string
         default: './package.json'
 
       path_to_package_lock:
         description: 'Path to package-lock.json or yarn.lock file'
         required: false
+        type: string
         default: 'package-lock.json'
 
       registry_url:
         description: 'URL of the npm registry to publish to'
         required: false
+        type: string
 
       install_command:
         description: 'Command to install dependencies'
         required: false
+        type: string
         default: 'npm ci'
 
       build_command:
         description: 'Command to build the package'
         required: false
+        type: string
         default: 'npm run build'
 
       build_output_path:
         description: 'Path to the build output directory'
         required: false
+        type: string
         default: 'dist'
 
       deployment_branch_name:
         description: 'Branch name for deployment'
         required: false
+        type: string
         default: 'main'
 
       version_command:
         description: 'Command to create a version of the package'
         required: true
+        type: string
       
       publish_command:
         description: 'Command to publish the package'
         required: true
+        type: string
 
     secrets:
       GITHUB_TOKEN:
         description: 'GitHub token for authentication'
         required: true
+        type: string
 
       NPM_TOKEN:
         description: 'NPM token for publishing packages'
         required: true
+        type: string
 
 jobs:
 
