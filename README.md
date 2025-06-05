@@ -119,3 +119,131 @@ pre_release_branch_name:
     description: 'Node authentication token for npm registry'
     required: true
  ```
+
+## Example workflow
+
+### Package json of an project
+```json
+{
+  "name": "@jpbnetley/npm-version-release",
+  "version": "v1.1.12-dev.0",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "tsc --noEmit",
+    "build": "tsc",
+    "version:dev": "npm version --preid=dev prerelease",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "version:publish": "npm publish --access public && git push --follow-tags",
+    "version:publish:dev": "npm publish --access public --tag dev && git push --follow-tags"
+  },
+  "author": "Jonathan Netley",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "typescript": "5.8.3"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  }
+}
+
+```
+### Github actions for the release
+- prerelease (in this case, to a dev branch)
+
+```yml
+name: Build and deploy dev
+
+on:
+  push:
+    branches: 
+      - dev
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  build-and-publish:
+    name: Build and publish dev
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+    uses: jpbnetley/npm-version-release-action/.github/workflows/action.yml@main
+    with:
+      node_version: 22
+      package_manager: 'npm'
+      path_to_package_json: './package.json'
+      path_to_package_lock: './package-lock.json'
+      registry_url: 'https://npm.pkg.github.com'
+      install_command: 'npm ci'
+      build_command: 'npm run build'
+      build_output_path: 'dist'
+      deployment_branch_name: ${{ github.ref_name }}
+      version_command: 'npm run version:dev'
+      publish_command: 'npm run version:publish:dev'
+      is_pre_release: true
+    secrets: inherit
+```
+
+- Production release (in this case to a dev branch)
+```yml
+# This is a basic workflow to help you get started with Actions
+
+name: Build and deploy production
+on:
+  workflow_dispatch:
+   inputs:
+      version:
+        type: choice
+        description: Version type
+        options: 
+        - patch
+        - minor
+        - major
+      
+env:
+  node_version: 22
+  deployment_branch: main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  build-and-publish:
+    name: Build and publish main
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+    uses: jpbnetley/npm-version-release-action/.github/workflows/action.yml@main
+    with:
+      node_version: 22
+      package_manager: 'npm'
+      path_to_package_json: './package.json'
+      path_to_package_lock: './package-lock.json'
+      registry_url: 'https://npm.pkg.github.com'
+      install_command: 'npm ci'
+      build_command: 'npm run build'
+      build_output_path: 'dist'
+      deployment_branch_name: ${{ github.ref_name }}
+      version_command: 'npm run version:${{ github.event.inputs.version }}'
+      publish_command: 'npm run version:publish'
+      is_pre_release: false
+      pre_release_branch_name: 'dev'
+    secrets: inherit
+
+```
