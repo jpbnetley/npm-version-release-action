@@ -152,8 +152,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node_version }}
-        # cache: ${{ inputs.package_manager }}
-        # cache-dependency-path: ${{ inputs.path_to_package_lock }}
+        cache: ${{ inputs.package_manager }}
+        cache-dependency-path: ${{ inputs.path_to_package_lock }}
         registry-url: ${{ inputs.registry_url }}
 
     - name: Get package version prior to publishing
