@@ -188,8 +188,10 @@ jobs:
 
     - name: Check if version was created
       run: |
-        if [ ${{ steps.initial-package-version.outputs.PACKAGE_VERSION }} = ${{ steps.package-version.outputs.PACKAGE_VERSION}} ]; then
+        if [ ${{ steps.initial-package-version.outputs.PACKAGE_VERSION }} != ${{ steps.package-version.outputs.PACKAGE_VERSION}} ]; then
           echo "No new version created. Exiting with error."
+          echo "Initial version: ${{ steps.initial-package-version.outputs.PACKAGE_VERSION }}"
+          echo "New version: ${{ steps.package-version.outputs.PACKAGE_VERSION }}"
           exit 1
         else
           echo "New version created: ${{ steps.package-version.outputs.new_version }}"
