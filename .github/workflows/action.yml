@@ -213,7 +213,7 @@ jobs:
     name: Merge release branch down to pre-release branch
     runs-on: ubuntu-latest
     needs: publish
-    if: ${{ inputs.pre_release_branch_name != github.ref_name }}
+    if: ${{ inputs.release_branch_name == github.ref_name }}
     permissions:
       contents: write
       pull-requests: write
