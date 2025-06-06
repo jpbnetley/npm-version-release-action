@@ -175,16 +175,22 @@ jobs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"   
 
     - name: Create version
-      id: create_version
       run: ${{ inputs.version_command }}
+
+    - name: Get package version
+      id: package-version
+      run: |
+        path_to_package_json=${{ inputs.path_to_package_json }}
+        PACKAGE_VERSION=$(node -p "require('$path_to_package_json').version")
+        echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
 
     - name: Check if version was created
       run: |
-        if [ ${{ steps.initial-package-version.outputs.PACKAGE_VERSION }} = ${{ steps.create_version.outputs.new_version}} ]; then
+        if [ ${{ steps.initial-package-version.outputs.PACKAGE_VERSION }} = ${{ steps.package-version.outputs.new_version}} ]; then
           echo "No new version created. Exiting with error."
           exit 1
         else
-          echo "New version created: ${{ steps.create_version.outputs.new_version }}"
+          echo "New version created: ${{ steps.package-version.outputs.new_version }}"
         fi
     
     - name: Publish
@@ -193,13 +199,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Get package version
-      id: package-version
-      run: |
-        path_to_package_json=${{ inputs.path_to_package_json }}
-        PACKAGE_VERSION=$(node -p "require('$path_to_package_json').version")
-        echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
 
     - name: Set job summary
       run: |
