@@ -161,6 +161,7 @@ jobs:
       run: |
         path_to_package_json=${{ inputs.path_to_package_json }}
         PACKAGE_VERSION=$(node -p "require('$path_to_package_json').version")
+        echo "package version: $PACKAGE_VERSION"
         echo "PACKAGE_VERSION=$PACKAGE_VERSION " >> $GITHUB_OUTPUT
 
     - name: Download build artifacts
@@ -182,6 +183,7 @@ jobs:
       run: |
         path_to_package_json=${{ inputs.path_to_package_json }}
         PACKAGE_VERSION=$(node -p "require('$path_to_package_json').version")
+        echo "package version: $PACKAGE_VERSION"
         echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
 
     - name: Check if version was created
