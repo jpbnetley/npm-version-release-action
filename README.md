@@ -196,7 +196,7 @@ jobs:
 
 ```
 
-- Production release (in this case to a dev branch)
+- Production release (in this case to a main branch)
 ```yml
 name: Build and deploy production
 on:
