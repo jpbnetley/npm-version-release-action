@@ -147,6 +147,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - run: git checkout HEAD
 
     - name: log
       run: |
