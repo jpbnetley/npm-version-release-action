@@ -147,12 +147,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - run: git checkout HEAD
 
-    - name: log
-      run: |
-        cat package.json
-    
     - name: Set up Node.js ${{ inputs.node_version }}
       uses: actions/setup-node@v4
       with:
@@ -160,6 +155,13 @@ jobs:
         cache: ${{ inputs.package_manager }}
         cache-dependency-path: ${{ inputs.path_to_package_lock }}
         registry-url: ${{ inputs.registry_url }}
+
+    - name: Get package version prior to publishing
+      id: initial-package-version
+      run: |
+        path_to_package_json=${{ inputs.path_to_package_json }}
+        PACKAGE_VERSION=$(node -p "require('$path_to_package_json').version")
+        echo "PACKAGE_VERSION=$PACKAGE_VERSION " >> $GITHUB_OUTPUT
 
     - name: Download build artifacts
       uses: actions/download-artifact@v4
@@ -176,9 +178,14 @@ jobs:
       id: create_version
       run: ${{ inputs.version_command }}
 
-    - name: log
+    - name: Check if version was created
       run: |
-        cat package.json
+        if [ ${{ steps.initial-package-version.outputs.PACKAGE_VERSION }} = ${{ steps.create_version.outputs.new_version}} ]; then
+          echo "No new version created. Exiting with error."
+          exit 1
+        else
+          echo "New version created: ${{ steps.create_version.outputs.new_version }}"
+        fi
     
     - name: Publish
       run: ${{ inputs.publish_command }}
