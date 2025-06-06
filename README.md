@@ -191,6 +191,7 @@ jobs:
       publish_command: 'npm run version:publish:dev'
       pre_release_branch_name: 'dev'
       release_branch_name: 'main'
+      is_pre_release: true
     secrets: inherit
 
 ```
