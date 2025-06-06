@@ -60,6 +60,12 @@ on:
         required: true
         type: string
 
+      is_pre_release:
+        description: 'Indicates if the deployment is a pre-release'
+        required: false
+        type: boolean
+        default: false
+
       pre_release_branch_name:
         description: 'Branch name for pre-release deployment'
         required: false
@@ -88,7 +94,7 @@ jobs:
         branch_name="${{ github.ref_name }}"
         pre_release_branch_name="${{ inputs.pre_release_branch_name }}"
         release_branch_name="${{ inputs.release_branch_name }}"
-        is_pre_release_branch=${{ github.ref_name == inputs.pre_release_branch_name }}
+        is_pre_release_branch=${{ github.ref_name == inputs.pre_release_branch_name && inputs.is_pre_release == 'true' }}
 
         echo "Pre-release branch: $pre_release_branch_name"
         echo "Release branch: $release_branch_name"
