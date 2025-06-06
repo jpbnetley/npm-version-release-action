@@ -91,7 +91,7 @@ jobs:
 
         if [ "$branch_name" = "$pre_release_branch_name" ] || [ "$branch_name" = "$release_branch_name" ]; then
           echo "This workflow is running on a valid branch ($branch_name)."
-          
+
           echo "is_valid_branch=true" >> $GITHUB_OUTPUT
         else
           echo "This workflow can only be run on the following branches:"
@@ -120,8 +120,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node_version }}
-        cache: 'npm'
-        cache-dependency-path: package-lock.json
+        cache: ${{ inputs.package_manager }}
+        cache-dependency-path: ${{ inputs.path_to_package_lock }}
     
     - name: Install dependencies
       run: ${{ inputs.install_command }}
