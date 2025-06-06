@@ -89,7 +89,11 @@ jobs:
         pre_release_branch_name="${{ inputs.pre_release_branch_name }}"
         release_branch_name="${{ inputs.release_branch_name }}"
 
-        if [ "$branch_name" != "$pre_release_branch_name" ] || [ "$branch_name" != "$release_branch_name" ]; then
+        if [ "$branch_name" = "$pre_release_branch_name" ] || [ "$branch_name" = "$release_branch_name" ]; then
+          echo "This workflow is running on a valid branch ($branch_name)."
+          
+          echo "is_valid_branch=true" >> $GITHUB_OUTPUT
+        else
           echo "This workflow can only be run on the following branches:"
           echo "Pre-release branch: $pre_release_branch_name"
           echo "Release branch: $release_branch_name"
@@ -98,9 +102,6 @@ jobs:
           
           echo "is_valid_branch=false" >> $GITHUB_OUTPUT
           exit 1
-        else
-          echo "This workflow is running on the $branch_name branch."
-          echo "is_valid_branch=true" >> $GITHUB_OUTPUT
         fi
   
   build:
