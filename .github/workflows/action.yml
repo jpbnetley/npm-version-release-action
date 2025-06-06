@@ -88,9 +88,11 @@ jobs:
         branch_name="${{ github.ref_name }}"
         pre_release_branch_name="${{ inputs.pre_release_branch_name }}"
         release_branch_name="${{ inputs.release_branch_name }}"
+        is_pre_release_branch=${{ github.ref_name == inputs.pre_release_branch_name }}
 
-        if [ "$branch_name" = "$pre_release_branch_name" ] || [ "$branch_name" = "$release_branch_name" ]; then
+        if [ "$branch_name" = "$pre_release_branch_name" && $is_pre_release_branch = true] || [ "$branch_name" = "$release_branch_name" && $is_pre_release_branch = false]; then
           echo "This workflow is running on a valid branch ($branch_name)."
+          echo "Pre-release branch: $pre_release_branch_name"
 
           echo "is_valid_branch=true" >> $GITHUB_OUTPUT
         else
@@ -98,7 +100,8 @@ jobs:
           echo "Pre-release branch: $pre_release_branch_name"
           echo "Release branch: $release_branch_name"
           echo "Current branch: $branch_name"
-          echo "Please switch to one of the valid branches to run this workflow."
+          echo "is a Pre-release: $is_pre_release_branch"
+          echo "Please switch to one of the valid branches to run this workflow for the Pre-release state."
           
           echo "is_valid_branch=false" >> $GITHUB_OUTPUT
           exit 1
