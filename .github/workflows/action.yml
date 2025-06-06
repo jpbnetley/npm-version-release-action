@@ -147,6 +147,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: log
+      run: |
+        cat package.json
     
     - name: Set up Node.js ${{ inputs.node_version }}
       uses: actions/setup-node@v4
@@ -170,6 +174,10 @@ jobs:
     - name: Create version
       id: create_version
       run: ${{ inputs.version_command }}
+
+    - name: log
+      run: |
+        cat package.json
     
     - name: Publish
       run: ${{ inputs.publish_command }}
