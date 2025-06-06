@@ -79,11 +79,6 @@ build_output_path:
     required: false
     default: 'dist'
 
-deployment_branch_name:
-    description: 'Branch name for deployment'
-    required: false
-    default: 'main'
-
 version_command:
     description: 'Command to create a version of the package'
     required: true
@@ -92,17 +87,17 @@ publish_command:
     description: 'Command to publish the package'
     required: true
 
-is_pre_release:
-    description: 'Indicates if the package is a pre-release'
-    required: false
-    type: boolean
-    default: false
-
 pre_release_branch_name:
     description: 'Branch name for pre-release deployment'
     required: false
     type: string
     default: 'dev'
+
+release_branch_name:
+    description: 'Branch name for release deployment'
+    required: false
+    type: string
+    default: 'main'
   ```
 
 ## Secrets
@@ -192,11 +187,12 @@ jobs:
       install_command: 'npm ci'
       build_command: 'npm run build'
       build_output_path: 'dist'
-      deployment_branch_name: ${{ github.ref_name }}
       version_command: 'npm run version:dev'
       publish_command: 'npm run version:publish:dev'
-      is_pre_release: true
+      pre_release_branch_name: 'dev'
+      release_branch_name: 'main'
     secrets: inherit
+
 ```
 
 - Production release (in this case to a dev branch)
@@ -237,11 +233,10 @@ jobs:
       install_command: 'npm ci'
       build_command: 'npm run build'
       build_output_path: 'dist'
-      deployment_branch_name: ${{ github.ref_name }}
       version_command: 'npm run version:${{ github.event.inputs.version }}'
       publish_command: 'npm run version:publish'
-      is_pre_release: false
       pre_release_branch_name: 'dev'
+      release_branch_name: 'main'
     secrets: inherit
 
 ```
