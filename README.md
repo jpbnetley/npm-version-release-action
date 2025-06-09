@@ -241,3 +241,6 @@ jobs:
     secrets: inherit
 
 ```
+
+## Ref
+- This project consumes the reusable action: https://github.com/jpbnetley/npm-version-release
