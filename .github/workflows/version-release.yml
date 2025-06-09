@@ -1,3 +1,5 @@
+name: Tag Version
+
 on: 
   workflow_dispatch:
     inputs:
