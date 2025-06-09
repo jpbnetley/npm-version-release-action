@@ -32,9 +32,39 @@ jobs:
           git push origin "$VERSION"
           echo "version=$version" >> $GITHUB_OUTPUT
 
-      - name: Set job summary
+      - name: Create github release
         run: |
-          echo "## Package Version" >> $GITHUB_STEP_SUMMARY
-          echo "- Version: ${{ steps.tag-release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          VERSION=${{ github.event.inputs.version }}
+          echo "Creating GitHub release for version: $VERSION"
+          gh release create "$VERSION" --title "Release $VERSION" --notes "Release notes for version $VERSION"
 
+  release-notes:
+        name: Release Notes
+        needs: release
+        runs-on: ubuntu-latest
+
+        permissions:
+          contents: write
+
+        steps:
+          - name: Checkout Repo
+            uses: actions/checkout@v4
+
+          - name: Fetch tags
+            run: git fetch --tags
+
+          - name: Get latest tag
+            id: tag
+            run: echo "latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+
+          - name: Create Github release
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              tag: ${{ steps.tag.outputs.latest_tag }}
+            run: |
+                gh release create $tag \
+                    --repo="$GITHUB_REPOSITORY" \
+                    --title="Release for $tag" \
+                    --generate-notes
+              
         
