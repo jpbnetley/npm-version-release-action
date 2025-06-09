@@ -32,12 +32,6 @@ jobs:
           git push origin "$VERSION"
           echo "version=$version" >> $GITHUB_OUTPUT
 
-      - name: Create github release
-        run: |
-          VERSION=${{ github.event.inputs.version }}
-          echo "Creating GitHub release for version: $VERSION"
-          gh release create "$VERSION" --title "Release $VERSION" --notes "Release notes for version $VERSION"
-
   release-notes:
         name: Release Notes
         needs: release
