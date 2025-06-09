@@ -34,32 +34,12 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT
 
   github-release:
-        name: Create github release
-        needs: release
-        runs-on: ubuntu-latest
-
-        permissions:
-          contents: write
-
-        steps:
-          - name: Checkout Repo
-            uses: actions/checkout@v4
-
-          - name: Fetch tags
-            run: git fetch --tags
-
-          - name: Get latest tag
-            id: tag
-            run: echo "latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
-
-          - name: Create Github release
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              tag: ${{ steps.tag.outputs.latest_tag }}
-            run: |
-                gh release create $tag \
-                    --repo="$GITHUB_REPOSITORY" \
-                    --title="Release for $tag" \
-                    --generate-notes
+    name: Create github release
+    needs: release
+    permissions:
+      contents: write
+    uses: jpbnetley/tag-release-action/.github/workflows/action.yml@main
+    with: 
+      version: ${{ github.event.inputs.version }}
               
         
